@@ -3,10 +3,17 @@ cmake_minimum_required(VERSION 3.18)
 project(mimetype.h C)
 include(CTest)
 
+if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
+  set(MIMETYPE_C_FLAGS -Wall -Wextra -Werror -Wno-missing-field-initializers)
+elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+  set(MIMETYPE_C_FLAGS /Wall)
+else()
+  message(ERROR "unknown compiler")
+endif()
+
 add_library(mimetype.h)
 target_compile_options(mimetype.h
-  PRIVATE
-    -Wall -Wextra -Werror -Wno-missing-field-initializers
+  PRIVATE ${MIMETYPE_C_FLAGS}
 )
 target_include_directories(mimetype.h SYSTEM
   PUBLIC .
